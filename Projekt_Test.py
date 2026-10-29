@@ -22,7 +22,7 @@ for c, lab in [("_body","body mass"), ("_metab","metabolic rate"), ("_brain","br
     s = df[c].dropna(); s = s[s > 0]
     ls = np.log10(s)
     print(f"{lab:16s} n={len(s):4d}  median={s.median():.3g}  "
-          f"IQR=[{s.quantile(.25):.3g},{s.quantile(.75):.3g}]  "
+          
           f"min={s.min():.3g}  max={s.max():.3g}")
 
 
@@ -31,7 +31,7 @@ for c, lab in [("_body","body mass"), ("_metab","metabolic rate"), ("_brain","br
 
 
 
-# jeden wiersz = gatunek; tylko cechy numeryczne (bez taksonomii, żeby nie leakować)
+# jeden wiersz = gatunek; tylko cechy numeryczne 
 g = df.groupby(["class", "species"])
 
 species_stats = pd.DataFrame({
@@ -66,9 +66,9 @@ print(species_stats.groupby("class")["n_rows"].agg(["count","sum"])
       .sort_values("sum", ascending=False).head(10).to_string())
 
 
-# =========================================
-# FAMILY per CLASS — ile próbek (wierszy) na rodzinę
-# =========================================
+
+#-------------------------------------------------------------ile próbek (wierszy) na rodzinę
+
 fam = (df.groupby(["class", "family"])
          .size()
          .reset_index(name="n_rows"))
@@ -119,7 +119,7 @@ d = d[(d["_body"] > 0) & (d["_metab"] > 0)].copy()
 d["log_body"]  = np.log10(d["_body"])
 d["log_metab"] = np.log10(d["_metab"])
 
-# top 6 klas, resztę zwijamy — inaczej legenda nieczytelna
+# top 6 klas, resztę zwijamy 
 top = d["class"].value_counts().head(6).index
 d["class_top"] = np.where(d["class"].isin(top), d["class"], "Other")
 
